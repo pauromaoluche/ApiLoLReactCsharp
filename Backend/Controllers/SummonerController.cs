@@ -16,7 +16,7 @@ namespace Backend.Controlller
             _lolApiService = lolApiService;
         }
 
-        [HttpGet("{summonerName}")]
+        [HttpGet("{summonerName}/{tagLine}")]
         public async Task<IActionResult> GetSummoner(string summonerName, string tagLine)
         {
             try
