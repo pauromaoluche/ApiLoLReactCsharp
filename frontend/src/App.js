@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/header";
 import Nav from "./components/navbar";
 import Footer from "./components/footer";
@@ -7,16 +7,20 @@ import Routers from "./routes";
 
 import "./App.scss";
 
-const App = () => (
-  <>
-    <Header />
-    <Nav />
-    <Banner />
-    <div className="content">
-      <Routers />
-    </div>
-    <Footer />
-  </>
-);
+const App = () => {
+  const [urlSplash, setUrlSplash] = useState(null);
+
+  return (
+    <>
+      <Header />
+      <Nav />
+      <Banner urlSplash={urlSplash} />
+      <div className="content">
+        <Routers setUrlSplash={setUrlSplash} />
+      </div>
+      <Footer />
+    </>
+  );
+};
 
 export default App;

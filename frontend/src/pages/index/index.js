@@ -12,9 +12,10 @@ import {
   Form,
 } from "react-bootstrap";
 
-export default function Index() {
+export default function Index({ setUrlSplash }) {
   const [nickName, setNickName] = useState("");
   const [tagLine, setTagLine] = useState("");
+  const [lvl, setLvl] = useState(0);
 
   useEffect(() => {}, []);
 
@@ -26,6 +27,9 @@ export default function Index() {
       const response = await api.get(`api/summoner/${nick}/${tag}`);
       setNickName(response.data.account.gameName);
       setTagLine(response.data.account.tagLine);
+      setUrlSplash(response.data.topMastery[0].urlSplash);
+      setLvl(response.data.summoner.summonerLevel);
+      console.log(response.data.topMastery[0].urlSplash);
     } catch (error) {
       console.error("Erro ao carregar summoner:", error);
     }
@@ -37,7 +41,7 @@ export default function Index() {
         <div className="profile d-flex">
           <div className="image">
             <Image src="https://picsum.photos/150" thumbnail />
-            <div className="level">203</div>
+            <div className="level">{lvl}</div>
           </div>
           <div className="descriptions ms-4">
             <h2>
