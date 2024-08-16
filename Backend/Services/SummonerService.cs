@@ -110,9 +110,9 @@ namespace Backend.Services
             }
         }
 
-        public async Task<List<ChampionMasteryDTO>> GetTopChampionMastery(string puuid)
+        public async Task<List<ChampionMasteryDTO>> GetTopChampionMastery(string puuid, int count =1)
         {
-            var url = $"https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/top";
+            var url = $"https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/top?count={count}";
 
             var response = await _httpClient.GetAsync(url);
 
