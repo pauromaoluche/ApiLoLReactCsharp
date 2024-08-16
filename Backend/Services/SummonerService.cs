@@ -68,6 +68,7 @@ namespace Backend.Services
 
         public async Task<SummonerDTO> GetSummonerInfo(string puuid)
         {
+            var version = await GetVersion();
             var url = $"https://br1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}";
 
             var response = await _httpClient.GetAsync(url);
@@ -75,7 +76,9 @@ namespace Backend.Services
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<SummonerDTO>(jsonResponse);
+                var summoner = JsonSerializer.Deserialize<SummonerDTO>(jsonResponse);
+                summoner.urlIcon = $"https://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{summoner.profileIconId}.png";
+                return summoner;
             }
             else
             {
@@ -110,7 +113,7 @@ namespace Backend.Services
             }
         }
 
-        public async Task<List<ChampionMasteryDTO>> GetTopChampionMastery(string puuid, int count =1)
+        public async Task<List<ChampionMasteryDTO>> GetTopChampionMastery(string puuid, int count = 1)
         {
             var url = $"https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/top?count={count}";
 
@@ -127,7 +130,8 @@ namespace Backend.Services
                 {
                     foreach (var champion in champions)
                     {
-                        if(champion.Value.Key == mastery.championId.ToString()){
+                        if (champion.Value.Key == mastery.championId.ToString())
+                        {
                             mastery.championName = champion.Value.Name;
                             mastery.urlSplash = champion.Value.Image.UrlSplash;
                         }
@@ -136,6 +140,28 @@ namespace Backend.Services
 
                 return championMastery;
 
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var errorMessage = $"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}\n" +
+                                   $"Request URI: {response.RequestMessage.RequestUri}\n" +
+                                   $"Detalhes: {errorContent}";
+
+                throw new HttpRequestException(errorMessage);
+            }
+        }
+
+        public async Task<string> GetVersion()
+        {
+            var url = "https://ddragon.leagueoflegends.com/api/versions.json";
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var versions = JsonSerializer.Deserialize<string[]>(jsonResponse);
+                return versions.Length > 0 ? versions[0] : null;
             }
             else
             {

@@ -17,6 +17,7 @@ namespace Backend.DTO
         public string accountId { get; set; }
         public int profileIconId { get; set; }
         public int summonerLevel { get; set; }
+        public string urlIcon { get; set; }
     }
 
     public class LeagueDTO
