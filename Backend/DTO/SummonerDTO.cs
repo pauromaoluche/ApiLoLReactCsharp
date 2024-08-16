@@ -30,11 +30,14 @@ namespace Backend.DTO
         public int losses { get; set; } = 0;
     }
 
-    public class TopChampionMastery
+    public class ChampionMasteryDTO
     {
         public int championId { get; set; }
         public int championLevel { get; set; }
         public int championPoints { get; set; }
+        public string championName { get; set; }
+        public string urlSplash { get; set; }
+
     }
     public class CombinedSummonerDTO
     {
@@ -42,14 +45,17 @@ namespace Backend.DTO
         public SummonerDTO Summoner { get; }
         public List<LeagueDTO> League { get; }
 
-        public ChampionDTO TopChampion { get; }
+        //public ChampionDTO Champion { get; }
 
-        public CombinedSummonerDTO(AccountDTO account, SummonerDTO summoner, List<LeagueDTO> league, ChampionDTO topChampion)
+        public List<ChampionMasteryDTO> TopMastery { get; }
+
+        public CombinedSummonerDTO(AccountDTO account, SummonerDTO summoner, List<LeagueDTO> league, /*ChampionDTO champion,*/ List<ChampionMasteryDTO> topMastery)
         {
             Account = account ?? throw new ArgumentNullException(nameof(account));
             Summoner = summoner ?? throw new ArgumentNullException(nameof(summoner));
             League = league ?? throw new ArgumentNullException(nameof(league));
-            TopChampion = topChampion ?? throw new ArgumentNullException(nameof(topChampion));
+            //Champion = champion ?? throw new ArgumentNullException(nameof(champion));
+            TopMastery = topMastery ?? throw new ArgumentNullException(nameof(topMastery));
         }
     }
 }

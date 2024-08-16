@@ -31,13 +31,16 @@ namespace Backend.Services
 
             var summonerLeagueInfo = await GetSummonerLeagueInfo(summonerInfo.id);
 
-            var topChampMastery = await _champion.GetChampion("Aatrox");
+            var topChampMastery = await GetTopChampionMastery(accountInfo.puuid);
+
+            //var GetChampion = await _champion.GetChampion("Aatrox");
 
             var combinedDTO = new CombinedSummonerDTO
             (
                 accountInfo,
                 summonerInfo,
                 summonerLeagueInfo,
+                //GetChampion,
                 topChampMastery
             );
             return combinedDTO;
@@ -95,6 +98,44 @@ namespace Backend.Services
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<List<LeagueDTO>>(jsonResponse);
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var errorMessage = $"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}\n" +
+                                   $"Request URI: {response.RequestMessage.RequestUri}\n" +
+                                   $"Detalhes: {errorContent}";
+
+                throw new HttpRequestException(errorMessage);
+            }
+        }
+
+        public async Task<List<ChampionMasteryDTO>> GetTopChampionMastery(string puuid)
+        {
+            var url = $"https://br1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/top";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var championMastery = JsonSerializer.Deserialize<List<ChampionMasteryDTO>>(jsonResponse);
+
+                var champions = await _champion.GetChampions();
+
+                foreach (var mastery in championMastery)
+                {
+                    foreach (var champion in champions)
+                    {
+                        if(champion.Value.Key == mastery.championId.ToString()){
+                            mastery.championName = champion.Value.Name;
+                            mastery.urlSplash = champion.Value.Image.UrlSplash;
+                        }
+                    }
+                }
+
+                return championMastery;
+
             }
             else
             {

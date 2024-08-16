@@ -53,6 +53,10 @@ namespace Backend.Services
                 // Verificar se 'Data' não é nulo e retorná-lo
                 if (championApiResponse?.Data != null)
                 {
+                    foreach (var champion in championApiResponse.Data)
+                    {
+                        champion.Value.Image.UrlSplash = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champion.Value.Name}_0.jpg";
+                    }
                     return championApiResponse.Data;
                 }
                 else
@@ -82,7 +86,7 @@ namespace Backend.Services
                 var jsonResponse = await response.Content.ReadAsStringAsync();
                 // Desserializar o JSON diretamente para ChampionApiResponse
                 var championApiResponse = JsonSerializer.Deserialize<ChampionApiResponse>(jsonResponse, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-                
+
                 // Verificar se 'Data' não é nulo e buscar o campeão específico
                 if (championApiResponse?.Data != null && championApiResponse.Data.TryGetValue(championName, out var champion))
                 {
