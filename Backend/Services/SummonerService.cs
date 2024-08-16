@@ -4,36 +4,42 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Backend.DTO;
 
-namespace Backend.Service
+namespace Backend.Services
 {
-    public class LolApiService
+    public class SummonerService : ISummoner
     {
         private readonly HttpClient _httpClient;
+        private readonly IChampion _champion;
 
-        public LolApiService(HttpClient httpClient)
+        public SummonerService(HttpClient httpClient, IChampion champion)
         {
             _httpClient = httpClient;
+            _champion = champion;
             _httpClient.BaseAddress = new Uri("https://americas.api.riotgames.com/");
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             _httpClient.DefaultRequestHeaders.Add("Accept-Language", "pt-BR,pt;q=0.9");
             _httpClient.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-02aebba2-b150-4a92-b201-3fb8f755441c");
+            _httpClient.DefaultRequestHeaders.Add("Origin", "https://developer.riotgames.com");
+            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-9ac4f4e8-7d7b-4b28-ba90-38f4e110a277");
         }
 
         public async Task<CombinedSummonerDTO> GetSummonerInformationAsync(string summonerName, string tag)
         {
             var accountInfo = await GetAccountInfo(summonerName, tag);
 
-            var puuid = accountInfo.puuid;
+            var summonerInfo = await GetSummonerInfo(accountInfo.puuid);
 
-            var summonerInfo = await GetSummonerInfo(puuid);
+            var summonerLeagueInfo = await GetSummonerLeagueInfo(summonerInfo.id);
+
+            var topChampMastery = await _champion.GetChampion("Aatrox");
 
             var combinedDTO = new CombinedSummonerDTO
             (
                 accountInfo,
-                summonerInfo
+                summonerInfo,
+                summonerLeagueInfo,
+                topChampMastery
             );
-
             return combinedDTO;
         }
 
@@ -78,5 +84,28 @@ namespace Backend.Service
                 throw new HttpRequestException(errorMessage);
             }
         }
+
+        public async Task<List<LeagueDTO>> GetSummonerLeagueInfo(string summonerId)
+        {
+            var url = $"https://br1.api.riotgames.com/lol/league/v4/entries/by-summoner/{summonerId}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<LeagueDTO>>(jsonResponse);
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var errorMessage = $"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}\n" +
+                                   $"Request URI: {response.RequestMessage.RequestUri}\n" +
+                                   $"Detalhes: {errorContent}";
+
+                throw new HttpRequestException(errorMessage);
+            }
+        }
     }
+
 }

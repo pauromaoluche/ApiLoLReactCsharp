@@ -9,19 +9,35 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class ChampionController : ControllerBase
     {
-        private readonly IChampion _championService;
+        private readonly IChampion _champion;
 
-        public ChampionController(IChampion championService)
+        public ChampionController(IChampion champion)
         {
-            _championService = championService;
+            _champion = champion;
         }
 
-        [HttpGet]
-        [Route("champions")]
+        [HttpGet("all")]
         public async Task<IActionResult> GetChampions()
         {
-            var champions = await _championService.GetChampions();
+            var champions = await _champion.GetChampions();
             return Ok(champions);
         }
+
+        [HttpGet("{championName}")]
+        public async Task<IActionResult> GetChampion(string championName)
+        {
+            try
+            {
+                var result = await _champion.GetChampion(championName);
+
+                return Ok(result);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }

@@ -47,9 +47,6 @@ namespace Backend.Services
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
 
-                // Debug: Exibir o JSON recebido
-                System.Diagnostics.Debug.WriteLine(jsonResponse);
-
                 // Desserializar o JSON diretamente para ChampionApiResponse
                 var championApiResponse = JsonSerializer.Deserialize<ChampionApiResponse>(jsonResponse, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
@@ -57,6 +54,41 @@ namespace Backend.Services
                 if (championApiResponse?.Data != null)
                 {
                     return championApiResponse.Data;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Os dados dos campeões não foram encontrados na resposta.");
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var errorMessage = $"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}\n" +
+                                   $"Request URI: {response.RequestMessage.RequestUri}\n" +
+                                   $"Detalhes: {errorContent}";
+
+                throw new HttpRequestException(errorMessage);
+            }
+        }
+
+        public async Task<ChampionDTO> GetChampion(string championName)
+        {
+            var version = await GetVersion();
+            var url = $"https://ddragon.leagueoflegends.com/cdn/{version}/data/pt_BR/champion/{championName}.json";
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                // Desserializar o JSON diretamente para ChampionApiResponse
+                var championApiResponse = JsonSerializer.Deserialize<ChampionApiResponse>(jsonResponse, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                
+                // Verificar se 'Data' não é nulo e buscar o campeão específico
+                if (championApiResponse?.Data != null && championApiResponse.Data.TryGetValue(championName, out var champion))
+                {
+                    var imageUrl = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championName}_0.jpg";
+                    champion.Image.UrlSplash = imageUrl;
+                    return champion;
                 }
                 else
                 {

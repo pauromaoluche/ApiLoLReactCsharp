@@ -9,5 +9,6 @@ namespace Backend.Services
     public interface IChampion
     {
         Task<Dictionary<string, ChampionDTO>> GetChampions();
+        Task<ChampionDTO> GetChampion(string championName);
     }
 }

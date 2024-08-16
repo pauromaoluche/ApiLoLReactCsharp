@@ -1,4 +1,4 @@
-using Backend.Service;
+
 using Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<LolApiService>();
-builder.Services.AddScoped<IChampion, ChampionService>();
+builder.Services.AddHttpClient<ISummoner, SummonerService>();
+builder.Services.AddHttpClient<IChampion, ChampionService>();
 
 var app = builder.Build();
 

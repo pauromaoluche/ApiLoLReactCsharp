@@ -1,5 +1,5 @@
 using System;
-using Backend.Service;
+using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controlller
@@ -8,12 +8,13 @@ namespace Backend.Controlller
     [Route("api/[controller]")]
     public class SummonerController : ControllerBase
     {
-        private readonly LolApiService _lolApiService;
+        private readonly ISummoner _summoner;
 
-        public SummonerController(LolApiService lolApiService)
+
+        public SummonerController(ISummoner summoner)
         {
             // Instancia o serviço que consome a API do League of Legends.
-            _lolApiService = lolApiService;
+            _summoner = summoner;
         }
 
         [HttpGet("{summonerName}/{tagLine}")]
@@ -21,7 +22,7 @@ namespace Backend.Controlller
         {
             try
             {
-                var result = await _lolApiService.GetSummonerInformationAsync(summonerName, tagLine);
+                var result = await _summoner.GetSummonerInformationAsync(summonerName, tagLine);
 
                 return Ok(result);
             }

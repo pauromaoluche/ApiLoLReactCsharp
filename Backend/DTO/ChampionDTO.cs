@@ -27,5 +27,6 @@ namespace Backend.DTO
         public string Full { get; set; }
         public string Sprite { get; set; }
         public string Group { get; set; }
+        public string UrlSplash { get; set; }
     }
 }
