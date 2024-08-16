@@ -1,0 +1,23 @@
+.content {
+  .image {
+    position: relative;
+    border: 2px solid #000000;
+    border-radius: 8px;
+   // overflow: hidden;
+
+    .level {
+      position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-Color: #000;
+        color: #fff;
+        border-Radius: 8px;
+        padding: 2px 6px;
+        border: 2px solid #00ffff;
+        font-Size: 14px
+    }
+    
+  }
+}
+

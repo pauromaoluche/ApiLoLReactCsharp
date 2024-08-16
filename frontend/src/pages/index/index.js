@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
+import "./styles.scss";
 import {
   Container,
   Image,
@@ -36,6 +37,7 @@ export default function Index() {
         <div className="profile d-flex">
           <div className="image">
             <Image src="https://picsum.photos/150" thumbnail />
+            <div className="level">203</div>
           </div>
           <div className="descriptions ms-4">
             <h2>

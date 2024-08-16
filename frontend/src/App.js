@@ -4,8 +4,8 @@ import Nav from "./components/navbar";
 import Footer from "./components/footer";
 import Banner from "./components/banner";
 import Routers from "./routes";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+
+import "./App.scss";
 
 const App = () => (
   <>
