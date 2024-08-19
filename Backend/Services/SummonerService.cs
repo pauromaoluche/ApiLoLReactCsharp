@@ -20,10 +20,10 @@ namespace Backend.Services
             _httpClient.DefaultRequestHeaders.Add("Accept-Language", "pt-BR,pt;q=0.9");
             _httpClient.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
             _httpClient.DefaultRequestHeaders.Add("Origin", "https://developer.riotgames.com");
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-9ac4f4e8-7d7b-4b28-ba90-38f4e110a277");
+            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-22ccf5ac-41ad-4507-a303-cf179f5624b7");
         }
 
-        public async Task<CombinedSummonerDTO> GetSummonerInformationAsync(string summonerName, string tag)
+        public async Task<CombinedSummonerDTO> GetSummonerInformation(string summonerName, string tag)
         {
             var accountInfo = await GetAccountInfo(summonerName, tag);
 
@@ -140,6 +140,28 @@ namespace Backend.Services
 
                 return championMastery;
 
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var errorMessage = $"Erro na requisição: {response.StatusCode} - {response.ReasonPhrase}\n" +
+                                   $"Request URI: {response.RequestMessage.RequestUri}\n" +
+                                   $"Detalhes: {errorContent}";
+
+                throw new HttpRequestException(errorMessage);
+            }
+        }
+
+        public async Task<List<string>> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue)
+        {
+            var url = $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=20";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<string>>(jsonResponse);
             }
             else
             {
