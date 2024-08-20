@@ -22,7 +22,7 @@ namespace Backend.Services
             _httpClient.DefaultRequestHeaders.Add("Accept-Language", "pt-BR,pt;q=0.9");
             _httpClient.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
             _httpClient.DefaultRequestHeaders.Add("Origin", "https://developer.riotgames.com");
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-81fc9c19-f4ab-4f06-a811-d9e46e1a5541");
+            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-d041aa16-7b3f-431c-b91d-c9ccc1cb178c");
         }
 
         public async Task<CombinedSummonerDTO> GetSummonerInformation(string summonerName, string tag)
@@ -156,7 +156,7 @@ namespace Backend.Services
 
         public async Task<List<MatchResponse>> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue)
         {
-            var url = $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=10";
+            var url = $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=3";
 
             var response = await _httpClient.GetAsync(url);
 

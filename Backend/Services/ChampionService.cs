@@ -90,8 +90,10 @@ namespace Backend.Services
                 // Verificar se 'Data' não é nulo e buscar o campeão específico
                 if (championApiResponse?.Data != null && championApiResponse.Data.TryGetValue(championName, out var champion))
                 {
-                    var imageUrl = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championName}_0.jpg";
-                    champion.Image.UrlSplash = imageUrl;
+                    var UrlSplash = $"https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championName}_0.jpg";
+                    var UrlIcon = $"https://ddragon.leagueoflegends.com/cdn/{version}/img/champion/{championName}.png";
+                    champion.Image.UrlSplash = UrlSplash;
+                    champion.Image.UrlIcon = UrlIcon;
                     return champion;
                 }
                 else

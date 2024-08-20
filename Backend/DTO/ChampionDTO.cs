@@ -28,5 +28,6 @@ namespace Backend.DTO
         public string Sprite { get; set; }
         public string Group { get; set; }
         public string UrlSplash { get; set; }
+        public string UrlIcon {get; set; }
     }
 }

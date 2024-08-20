@@ -241,6 +241,7 @@ namespace Backend.DTO
         public int champLevel { get; set; }
         public int championId { get; set; }
         public string championName { get; set; }
+        public string urlChampIcon { get; set; }
         public int championTransform { get; set; }
         public int commandPings { get; set; }
         public int consumablesPurchased { get; set; }
