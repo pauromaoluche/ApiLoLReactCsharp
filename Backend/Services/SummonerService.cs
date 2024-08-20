@@ -10,17 +10,19 @@ namespace Backend.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IChampion _champion;
+        private readonly IMatch _match;
 
-        public SummonerService(HttpClient httpClient, IChampion champion)
+        public SummonerService(HttpClient httpClient, IChampion champion, IMatch match)
         {
             _httpClient = httpClient;
             _champion = champion;
+            _match = match;
             _httpClient.BaseAddress = new Uri("https://americas.api.riotgames.com/");
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             _httpClient.DefaultRequestHeaders.Add("Accept-Language", "pt-BR,pt;q=0.9");
             _httpClient.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
             _httpClient.DefaultRequestHeaders.Add("Origin", "https://developer.riotgames.com");
-            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-22ccf5ac-41ad-4507-a303-cf179f5624b7");
+            _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", "RGAPI-81fc9c19-f4ab-4f06-a811-d9e46e1a5541");
         }
 
         public async Task<CombinedSummonerDTO> GetSummonerInformation(string summonerName, string tag)
@@ -152,16 +154,18 @@ namespace Backend.Services
             }
         }
 
-        public async Task<List<string>> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue)
+        public async Task<List<MatchResponse>> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue)
         {
-            var url = $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=20";
+            var url = $"https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=10";
 
             var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<string>>(jsonResponse);
+                var matchs = JsonSerializer.Deserialize<List<string>>(jsonResponse).ToArray();
+                var matchesInfo = await _match.GetMatcheInfo(matchs);
+                return matchesInfo;
             }
             else
             {

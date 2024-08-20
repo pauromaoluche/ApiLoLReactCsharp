@@ -51,7 +51,6 @@ namespace Backend.Controlller
             }
         }
 
-
         [HttpGet("matche/{puuid}")]
         public async Task<IActionResult> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue = "")
         {
