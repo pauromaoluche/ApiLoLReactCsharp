@@ -66,20 +66,5 @@ namespace Backend.Controlller
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpGet("matches")]
-        public async Task<IActionResult> GetMatcheInfo([FromQuery]string[] matchIds)
-        {
-            try
-            {
-                var result = await _summoner.GetMatcheInfo(matchIds);
-                return Ok(result);
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
     }
 }

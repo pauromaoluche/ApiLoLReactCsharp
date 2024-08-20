@@ -27,6 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddControllers();
 builder.Services.AddHttpClient<ISummoner, SummonerService>();
 builder.Services.AddHttpClient<IChampion, ChampionService>();
+builder.Services.AddHttpClient<IMatch, MatchService>();
 
 var app = builder.Build();
 

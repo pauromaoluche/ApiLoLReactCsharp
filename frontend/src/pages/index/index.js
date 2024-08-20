@@ -16,6 +16,7 @@ export default function Index({ setUrlSplash }) {
   const [nickName, setNickName] = useState("");
   const [tagLine, setTagLine] = useState("");
   const [lvl, setLvl] = useState(0);
+  const [icon, setIcon] = useState("");
 
   useEffect(() => {}, []);
 
@@ -29,6 +30,7 @@ export default function Index({ setUrlSplash }) {
       setTagLine(response.data.account.tagLine);
       setUrlSplash(response.data.topMastery[0].urlSplash);
       setLvl(response.data.summoner.summonerLevel);
+      setIcon(response.data.summoner.urlIcon);
       console.log(response.data.topMastery[0].urlSplash);
     } catch (error) {
       console.error("Erro ao carregar summoner:", error);
@@ -40,7 +42,7 @@ export default function Index({ setUrlSplash }) {
       <div className="profile-header d-flex justify-content-between">
         <div className="profile d-flex">
           <div className="image">
-            <Image src="https://picsum.photos/150" thumbnail />
+            <Image width="150px" src={icon} thumbnail />
             <div className="level">{lvl}</div>
           </div>
           <div className="descriptions ms-4">

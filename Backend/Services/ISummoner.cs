@@ -13,6 +13,5 @@ namespace Backend.Services
         Task<SummonerDTO> GetSummonerInfo(string puuid);
         Task<List<LeagueDTO>> GetSummonerLeagueInfo(string summonerId);
         Task<List<string>> GetSummonerMatches(string puuid, int startTime, int endTime, int count, string typeQueue);
-        Task<List<string>> GetMatcheInfo(string[] matchIds);
     }
 }
