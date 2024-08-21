@@ -3,21 +3,203 @@
     position: relative;
     border: 2px solid #000000;
     border-radius: 8px;
-   // overflow: hidden;
+    // overflow: hidden;
 
     .level {
       position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-Color: #000;
-        color: #fff;
-        border-Radius: 8px;
-        padding: 2px 6px;
-        border: 2px solid #00ffff;
-        font-Size: 14px
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: #fff;
+      border-radius: 8px;
+      padding: 2px 6px;
+      border: 2px solid #00ffff;
+      font-size: 14px;
     }
-    
   }
 }
 
+// .contentOverview {
+//   .right {
+//     .content-match {
+//       display: flex;
+//       .group-two {
+//         display: flex;
+//         align-items: center;
+//         .items {
+//           display: flex;
+//           height: 70px;
+//           .champion {
+//           }
+//           .summoner-spells,
+//           .runes {
+//             display: flex;
+//             flex-direction: column;
+//             margin-right: 2px;
+//             img {
+//               height: 35px;
+//             }
+//           }
+//         }
+//       }
+
+//       .group-four {
+//         display: flex;
+//         align-items: center;
+//         .items {
+//           height: 50px;
+//           display: flex;
+//           .main {
+//             display: grid;
+//             grid-template-columns: repeat(3, 1fr);
+//             grid-template-rows: repeat(2, 1fr);
+//             grid-gap: 2px;
+//             justify-content: space-between;
+//             img {
+//               height: 25px;
+//             }
+//           }
+//         }
+//       }
+//     }
+
+//     .group-five {
+//       .left,
+//       .right {
+//         small {
+//           font-size: 13px;
+//         }
+//       }
+//     }
+//   }
+// }
+
+.match-history {
+  // Defina a largura máxima para as partidas
+  max-width: 900px;
+  margin: 0 auto;
+
+  .match {
+    // Defina o display flex para os detalhes da partida
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #2c2f33;
+    border-radius: 8px;
+
+    &-details {
+      display: flex;
+      align-items: center;
+    }
+
+    .champion-icon {
+      margin-right: 15px;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
+    }
+
+    .spells-runes {
+      display: flex;
+      margin-right: 15px;
+
+      .spells,
+      .runes {
+        display: flex;
+        flex-direction: column;
+
+        img {
+          width: 25px;
+          height: 25px;
+          margin-bottom: 5px;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    .match-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-right: 15px;
+
+      .result {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+      }
+
+      .details {
+        font-size: 0.9em;
+        color: #b9bbbe;
+        margin-bottom: 5px;
+      }
+
+      .points {
+        font-size: 0.9em;
+        color: #b9bbbe;
+      }
+    }
+
+    .kda {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-right: 15px;
+
+      span {
+        margin-bottom: 5px;
+      }
+
+      .cs-vision {
+        font-size: 0.9em;
+        color: #b9bbbe;
+      }
+    }
+
+    .items {
+      display: flex;
+      margin-right: 15px;
+
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 5px;
+        border-radius: 5px;
+      }
+    }
+
+    .player-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      h4 {
+        margin: 0;
+        margin-bottom: 5px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.9em;
+        color: #b9bbbe;
+        margin-bottom: 5px;
+      }
+    }
+
+    .players {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      span {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
